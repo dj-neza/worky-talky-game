@@ -65,7 +65,7 @@ const STATIC_OBJECTS = [
 ];
 
 const charWidth = 15;
-const charHeight = 38;
+const charHeight = 28;
 
 const containerWidth = 800;
 const containerHeight = 400;
@@ -258,6 +258,14 @@ export default function Engine() {
           width: charWidth,
         }}
       ><Girl fill="blue" /></div>
+      {player.length !== 0 && <div
+        className={styles.character}
+        style={{
+          transform: `translate(${player[0]}px, ${player[1]}px)`,
+          height: charHeight,
+          width: charWidth,
+        }}
+      ><Guy fill="#8623CC" /></div>}
       {
         gameState.blocks.map(
           block => (
