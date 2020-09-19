@@ -1,0 +1,20 @@
+import { ReactComponent as Cabinets } from "./Cabinets.svg";
+import { ReactComponent as Chair1 } from "./Chair1.svg";
+import { ReactComponent as Chair2 } from "./Chair2.svg";
+import { ReactComponent as Chill } from "./Chill.svg";
+import { ReactComponent as DeskL } from "./DeskL.svg";
+import { ReactComponent as DeskS } from "./DeskS.svg";
+import { ReactComponent as Dining } from "./Dining.svg";
+import { ReactComponent as Girl } from "./Girl.svg";
+import { ReactComponent as Guy } from "./Guy.svg";
+import { ReactComponent as Kitchen } from "./Kitchen.svg";
+import { ReactComponent as Meeting } from "./Meeting.svg";
+import { ReactComponent as Plant } from "./Plant.svg";
+import { ReactComponent as Railing } from "./Railing.svg";
+import { ReactComponent as Table1 } from "./Table1.svg";
+import { ReactComponent as Table2 } from "./Table2.svg";
+import { ReactComponent as Terrace } from "./Terrace.svg";
+import { ReactComponent as Tv } from "./Tv.svg";
+import { ReactComponent as Workspace } from "./Workspace.svg";
+
+export { Cabinets, Chair1, Chair2, Chill, DeskL, DeskS, Dining, Girl, Guy, Kitchen, Meeting, Plant, Railing, Table1, Table2, Terrace, Tv, Workspace };

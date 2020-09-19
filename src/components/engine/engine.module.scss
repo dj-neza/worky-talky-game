@@ -9,7 +9,6 @@
     display: block;
     top: 0;
     left: 0;
-    background-color: #568cd2;
 }
   
 .block {
@@ -20,4 +19,8 @@
     top: 0;
     left: 0;
     background-color: black;
+}
+
+.absolute {
+    position: absolute;
 }
