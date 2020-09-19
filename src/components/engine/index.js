@@ -1,6 +1,11 @@
 import React, { useState, useEffect } from "react";
 import styles from "./engine.module.scss";
 import { useEvent } from "../../hooks";
+import io from 'socket.io-client'
+
+let socket = io(`http://localhost:3000`);
+// NUJNO UPORABI SPODNJO PRED DEPLOYEM NA HEROKU
+// let socket = io(`https://serene-temple-32758.herokuapp.com`);
 
 const BLOCKS = [
   // outer walls 
@@ -131,6 +136,7 @@ export default function Engine() {
   const [started, setStarted] = useState(false);
   // instance of game engine
   const [engine, setEngine] = useState(null);
+  const [player, setPlayer] = useState([]);
   
   const handleKeyPress = (e) => {
     // no game initialised
@@ -154,6 +160,11 @@ export default function Engine() {
   useEffect(() => {
     if (!started) {
       // TODO: add a check to connect to the backend first
+      // dobiva podatke kje so drugi
+      socket.on(`chat message`, data => {
+        console.log("drugi player ", data);
+        setPlayer(data);
+      })
       setStarted(true);
       // create a new engine and save it to the state to use
       setEngine(
@@ -172,6 +183,10 @@ export default function Engine() {
       setStart(true);
     }*/
   });
+
+  useEffect(() => {
+    socket.emit('send coordinates', [gameState.moveX, gameState.moveY]);
+  }, [gameState]);
   
   return (
     <div
