@@ -1,30 +1,16 @@
 .container {
     position: relative;
-    background-color: #568cd2;
-    height: 50vh;
-    width: 80vw;
+    background-color: #f2f2f2;
     overflow: hidden;
 }
 
 .character {
     position: absolute;
     display: block;
-    height: 100px;
-    width: 100px;
     top: 0;
     left: 0;
-    background-color: #ffd600;
+    background-color: #568cd2;
 }
-
-// TODO: remove this 
-/*.stage {
-    position: absolute;
-    display: block;
-    bottom: 0;
-    left: 0;
-    height: 100vh;
-    width: calc(10 * 100vw);
-  }*/
   
 .block {
     position: absolute;
@@ -33,5 +19,5 @@
     width: 80px;
     top: 0;
     left: 0;
-    background-color: red;
+    background-color: black;
 }

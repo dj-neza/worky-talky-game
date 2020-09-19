@@ -3,16 +3,34 @@ import styles from "./engine.module.scss";
 import { useEvent } from "../../hooks";
 
 const BLOCKS = [
-  [140, 100, 280, 120],
-  [250, 200, 270, 340],
-  [390, 50, 400, 60]
+  // outer walls 
+  [0, 0, 5, 400],
+  [0, 0, 800, 5],
+  [795, 0, 800, 400],
+  [0, 395, 150, 400],
+  [190, 395, 800, 400],
+  // inner walls
+  [695, 0, 700, 180],
+  [695, 220, 700, 400],
+  [570, 175, 700, 180],
+  [525, 0, 530, 140],
+  [480, 135, 530, 140],
+  [385, 0, 390, 240],
+  [250, 135, 440, 140],
+  [0, 135, 150, 140],
+  [145, 135, 150, 230],
+  [145, 320, 150, 400],
+  [0, 275, 150, 280],
+  [250, 135, 255, 240],
+  [250, 235, 320, 240],
+  [495, 300, 500, 400],
 ];
 
 const charWidth = 10;
 const charHeight = 10;
 
-//const blockWidth = 20;
-//const blockHeight = 20;
+const containerWidth = 800;
+const containerHeight = 400;
 
 function CreateEngine(startPosition, setState) {
   this.settings = {
@@ -22,8 +40,8 @@ function CreateEngine(startPosition, setState) {
   this.game = "start";
   this.posX = startPosition[0];
   this.posY = startPosition[1];
-  this.moveX = 0;
-  this.moveY = 0;
+  this.moveX = 170;
+  this.moveY = 390;
   this.blocks = BLOCKS;
 
   const checkBlocks = () => {
@@ -32,16 +50,23 @@ function CreateEngine(startPosition, setState) {
 
     return this.blocks.some((block) => {
       // check if char hits a block
-      return ((charX >= block[0] && charX < block[2]) && (charY >= block[1] && charY < block[3])); 
+      return ((charX + charWidth > block[0] && charX < block[2]) && (charY + charHeight > block[1] && charY < block[3])); 
     });
+  };
+
+  const withinEdges = () => {
+    const charX = this.posX + this.moveX;
+    const charY = this.posY + this.moveY;
+
+    return (charX < containerWidth && charY < containerHeight && charX >= 5 && charY >= 5)
   };
 
   // function that will be continuously ran
   this.repaint = () => {
     // check if char has hit a block
     const collision = checkBlocks();
-    console.log(collision);
-    if (!collision) {
+    const within = withinEdges();
+    if (!collision && within) {
       this.posX += this.moveX;
       this.posY += this.moveY;
     }
@@ -93,8 +118,8 @@ function CreateEngine(startPosition, setState) {
 }
 
 const initialState = {
-  moveX: 10,
-  moveY: 10,
+  moveX: 170,
+  moveY: 390,
   blocks: BLOCKS,
   // TODO: interaction + status: "start",
 };
@@ -151,6 +176,10 @@ export default function Engine() {
   return (
     <div
       className={styles.container}
+      style={{
+        height: containerHeight,
+        width: containerWidth,
+      }}
     >
       <span
         className={styles.character}
