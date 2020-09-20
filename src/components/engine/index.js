@@ -75,11 +75,11 @@ function CreateEngine(startPosition, setState) {
     tile: 1,
   };
 
-  this.game = "start";
   this.posX = startPosition[0];
   this.posY = startPosition[1];
   this.moveX = 170;
   this.moveY = 360;
+  this.interacting = false;
   this.blocks = BLOCKS;
 
   const checkBlocks = () => {
@@ -127,19 +127,10 @@ function CreateEngine(startPosition, setState) {
       moveX: this.posX,
       moveY: this.posY,
       blocks: this.blocks,
-      //status: this.game,
+      interaction: this.interacting,
     });
 
-    // stop the game if the game var has been set to false
-    /*if (this.game !== 'start') {
-      // reset and stop
-      this.game = 'start';
-      //this.stage = 0;
-      this.jump = false;
-      this.direction = 'up';
-      this.position = 0;
-      return null;
-    }*/
+    this.interacting = false;
 
     // start repaint on next frame
     return requestAnimationFrame(this.repaint);
@@ -163,6 +154,9 @@ function CreateEngine(startPosition, setState) {
           this.moveX = -10;
       }
     },
+    interact: () => {
+      this.interacting = true;
+    }
   });
 }
 
@@ -170,16 +164,18 @@ const initialState = {
   moveX: 170,
   moveY: 360,
   blocks: BLOCKS,
-  // TODO: interaction + status: "start",
+  interaction: false,
 };
 
-export default function Engine() {
+export default function Engine({ onInteraction }) {
   // game state
   const [gameState, setGameState] = useState(initialState);
   // is game running
   const [started, setStarted] = useState(false);
+  const [userData, setUserData] = useState(null);
   // instance of game engine
   const [engine, setEngine] = useState(null);
+  // the other player(s) positions
   const [player, setPlayer] = useState([]);
   
   const handleKeyPress = (e) => {
@@ -195,7 +191,7 @@ export default function Engine() {
     } else if (e.key === "ArrowDown") {
       engine.move("down");
     } else if (e.key === " ") {
-      // TODO: engine.interact();
+      engine.interact();
     }
   };
   
@@ -203,13 +199,21 @@ export default function Engine() {
   
   useEffect(() => {
     if (!started) {
-      // TODO: add a check to connect to the backend first
-      // dobiva podatke kje so drugi
+      // PAT: edit this 
+      /*socket.on(`sending user their ID`, data => {
+        //setUserData(data); // assuming da so { id: "", gender: "M"/"F" }, 
+      });*/
+
+      // PAT: edit this ce je treba
+      socket.on(`generated videochat`, link => {
+        onInteraction(link);
+      });
+
+      // dobiva podatke kje so drugi playerji
       socket.on(`chat message`, data => {
         console.log("drugi player ", data);
         setPlayer(data);
-      })
-      setStarted(true);
+      });
       // create a new engine and save it to the state to use
       setEngine(
         new CreateEngine(
@@ -217,20 +221,22 @@ export default function Engine() {
           newState => setGameState(newState)
         ),
       );
+      
+      setStarted(true);
     }
+    
 
-    // TODO: add game states
-    /*if (gameState.status === 'fail' && started) {
-      setStarted(false);
-      alert('You lost! Try again?');
-      setGameState(initialState);
-      setStart(true);
-    }*/
-  });
+  }, [started]);
 
   useEffect(() => {
     socket.emit('send coordinates', [gameState.moveX, gameState.moveY]);
-  }, [gameState]);
+    
+    if (gameState.interaction === true) {
+      if (Math.abs(gameState.moveX - player[0]) < 30 && Math.abs(gameState.moveX - player[0]) < 30) {
+        // PAT: socket.emit('interaction happened', playerId);
+      }
+    }
+  }, [gameState, player]);
   
   return (
     <div
